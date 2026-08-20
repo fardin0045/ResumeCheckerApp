@@ -208,27 +208,44 @@ const validator = z.object({
   languages: z.array(z.string()).default([]),
   interests: z.array(z.string()).default([]),
 });
-
 function buildPrompt(rawText) {
   return [
-    'You are a resume parser. The input is text extracted from a PDF - lines may be jumbled or out of natural reading order.',
+    'You are a resume parser. The input is text extracted from a PDF and lines may be jumbled or out of natural reading order.',
     '',
-    'Extract structured data',
-    '- basics: name, professional title, location, email, phone, social links (LinkedIn / GitHub / portfolio etc.; label like "LinkedIn", full URL)',
-    '- summary: the professional summary paragraph (rejoin if split across lines)',
-    '- experience: jobs most recent first, with company, role, period (preserve original date format), location if available, and bullet points',
-    '- education: degree, school, period, location, optional details',
-    '- skills: flat array of technical skills',
-    '- projects: name, one-sentence description, optional tech tags, optional links',
+    'Extract structured resume data.',
+    '',
+    '- basics: name, professional title, location, email, phone, and social links',
+    '- summary: professional summary, rejoining lines when necessary',
+    '- experience: company, role, period, location, and bullet points',
+    '- education: degree, school, period, location, and details',
+    '',
+    '- skills: extract ALL explicitly mentioned skills and preserve them carefully.',
+    '  Include:',
+    '  - programming languages',
+    '  - frameworks and libraries',
+    '  - databases',
+    '  - tools and platforms',
+    '  - cloud/devops technologies',
+    '  - technical concepts',
+    '  - relevant professional skills',
+    '',
+    '  IMPORTANT:',
+    '  - Prioritize the dedicated Skills section when identifying skills.',
+    '  - Do not drop skills just because they also appear in projects or experience.',
+    '  - Do not infer skills that are not explicitly mentioned.',
+    '  - Preserve the original skill names.',
+    '',
+    '- projects: name, description, explicitly mentioned technologies, and links',
     '- certifications: name, issuer, year',
     '- languages: flat array',
     '- interests: flat array',
     '',
     'Rules:',
-    '- Be conservative: omit fields that are not clearly present. Use empty strings/arrays where missing.',
-    '- Do not invent or paraphrase - extract verbatim where possible.',
-    '- Each experience bullet should read as a complete sentence.',
-    "- Preserve original date formats (e.g. 'Jan 2022 - Dec 2023').",
+    '- Be conservative and never invent information.',
+    '- Use empty strings or arrays when information is missing.',
+    '- Do not paraphrase extracted information unless needed to reconstruct broken PDF lines.',
+    '- Preserve original date formats.',
+    '- Keep Skills separate from Projects and Experience.',
     '',
     'RESUME TEXT:',
     '---',
@@ -237,6 +254,14 @@ function buildPrompt(rawText) {
   ].join('\n');
 }
 const EMPTY = {
+    basics: {
+    name: "",
+    title: "",
+    location: "",
+    email: "",
+    phone: "",
+    links: [],
+  },
   summary: "",
   experience: [],
   education: [],
@@ -254,29 +279,54 @@ async function parseResume(rawText) {
 
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const result = await ai.models.generateContent({
-        model: env.geminiModel,
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        config: {
-          responseMimeType: "application/json",
-          responseSchema,
-          temperature: 0.1,
-        },
-      });
+  const result = await ai.models.generateContent({
+    model: env.geminiModel,
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }],
+      },
+    ],
+    config: {
+      responseMimeType: "application/json",
+      responseSchema,
+      temperature: 0.1,
+    },
+  });
 
-      const text =
-        typeof result?.text === "function" ? result.text() : result.text;
+  const text = result?.text;
 
-      if (!text) throw new Error("Empty response");
+  console.log("Gemini response text:");
+  console.log(text);
 
-      const parsed = JSON.parse(text);
-      return validator.parse(parsed);
-    } catch (err) {
-      if (attempt === 2) {
-        console.error("Structured parse failed:", err.message);
-        return EMPTY;
-      }
-    }
+  if (!text) {
+    throw new Error("Gemini returned an empty response");
+  }
+
+  const parsed = JSON.parse(text);
+
+  console.log("Parsed Gemini JSON:");
+  console.dir(parsed, { depth: null });
+
+  const validated = validator.parse(parsed);
+
+  console.log("Validated resume:");
+  console.dir(validated, { depth: null });
+
+  return validated;
+
+} catch (err) {
+  console.error("====================================");
+  console.error(`Resume parsing attempt ${attempt} failed`);
+  console.error("Error name:", err?.name);
+  console.error("Error message:", err?.message);
+  console.error("Full error:", err);
+  console.error("====================================");
+
+  if (attempt === 2) {
+    throw err;
+  }
+}
   }
 
   return EMPTY;
