@@ -1,0 +1,745 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+/* =========================================================
+   TAILWIND THEME TOKENS
+========================================================= */
+
+@theme {
+  --font-sans:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --font-display:
+    "Geist",
+    "Inter",
+    sans-serif;
+
+  --font-serif:
+    "Cormorant Garamond",
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  /* Surfaces */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+
+  /* Text */
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+
+  /* ResuMate brand */
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+
+  /* States */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  /* Radius */
+  --radius-card: 20px;
+  --radius-pill: 999px;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* =======================================================
+     EXISTING LIGHT UI
+     kept intentionally unchanged
+  ======================================================= */
+
+  --bg: #f4f4f0;
+
+  --surface: #ffffff;
+
+  --surface-2: #fafaf7;
+
+  --border:
+    rgba(15, 17, 21, 0.06);
+
+  --ink: #0f1115;
+
+  --ink-muted: #6b7280;
+
+
+  /* =======================================================
+     RESUMate BRAND
+     old green removed
+  ======================================================= */
+
+  /*
+    Main interactive accent
+
+    Used by:
+    buttons
+    checkboxes
+    progress bars
+    charts
+    focus states
+    selected UI
+  */
+  --accent: #6d5dfc;
+
+
+  /*
+    Stronger violet
+
+    Used mainly for:
+    icons
+    labels
+    text accents
+  */
+  --accent-strong: #5146d9;
+
+
+  /*
+    Light violet surface
+
+    Replacement for pale sage green
+  */
+  --accent-soft: #efedff;
+
+
+  /* =======================================================
+     HERO / FEATURE CARDS
+     premium dark-blue
+  ======================================================= */
+
+  --accent-hero: #111c3f;
+
+  --accent-hero-2: #20366f;
+
+
+  /* =======================================================
+     POSITIVE STATE
+     Cyan instead of green
+  ======================================================= */
+
+  --success: #0891b2;
+
+
+  /* =======================================================
+     OTHER STATES
+     preserved
+  ======================================================= */
+
+  --warning: #c28a3a;
+
+  --danger: #b5564e;
+
+
+  /* =======================================================
+     SHADOWS
+  ======================================================= */
+
+  --shadow-card:
+    0 1px 3px rgba(15, 17, 21, 0.04),
+    0 1px 2px rgba(15, 17, 21, 0.03);
+
+
+  --shadow-hover:
+    0 8px 28px rgba(15, 17, 21, 0.07),
+    0 2px 8px rgba(79, 70, 229, 0.035);
+
+
+  /* =======================================================
+     EXTRA BRAND TOKENS
+  ======================================================= */
+
+  --brand-violet: #7c5cff;
+
+  --brand-indigo: #6366f1;
+
+  --brand-blue: #4f7cff;
+
+  --brand-cyan: #22d3ee;
+
+
+  --brand-gradient:
+    linear-gradient(
+      135deg,
+      #7c5cff 0%,
+      #6366f1 48%,
+      #4f7cff 100%
+    );
+
+
+  --brand-gradient-wide:
+    linear-gradient(
+      100deg,
+      #7c5cff 0%,
+      #6366f1 36%,
+      #4f7cff 68%,
+      #22d3ee 100%
+    );
+
+
+  --brand-glow:
+    rgba(99, 102, 241, 0.22);
+
+
+  --cyan-soft:
+    rgba(34, 211, 238, 0.10);
+
+
+  --accent-border:
+    rgba(124, 92, 255, 0.18);
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* =======================================================
+     EXISTING DARK UI
+     kept intentionally unchanged
+  ======================================================= */
+
+  --bg: #0f1115;
+
+  --surface: #16181d;
+
+  --surface-2: #1b1e24;
+
+  --border:
+    rgba(255, 255, 255, 0.06);
+
+  --ink: #f2f2ee;
+
+  --ink-muted: #9aa0a6;
+
+
+  /* =======================================================
+     RESUMate BRAND
+  ======================================================= */
+
+  /*
+    Slightly brighter in dark mode
+    for strong visibility
+  */
+  --accent: #8b7cff;
+
+
+  --accent-strong: #b2a8ff;
+
+
+  /*
+    Transparent violet surface
+    instead of old transparent sage
+  */
+  --accent-soft:
+    rgba(124, 92, 255, 0.14);
+
+
+  /* =======================================================
+     PREMIUM DARK BLUE FEATURE CARDS
+  ======================================================= */
+
+  --accent-hero: #0d1734;
+
+  --accent-hero-2: #1b3168;
+
+
+  /* =======================================================
+     SUCCESS = CYAN
+  ======================================================= */
+
+  --success: #22d3ee;
+
+
+  /* =======================================================
+     WARNING / DANGER
+     unchanged
+  ======================================================= */
+
+  --warning: #d4a86a;
+
+  --danger: #d4847c;
+
+
+  /* =======================================================
+     SHADOWS
+  ======================================================= */
+
+  --shadow-card:
+    0 1px 3px rgba(0, 0, 0, 0.30),
+    0 1px 2px rgba(0, 0, 0, 0.20);
+
+
+  --shadow-hover:
+    0 10px 30px rgba(0, 0, 0, 0.38),
+    0 4px 18px rgba(79, 70, 229, 0.07);
+
+
+  /* =======================================================
+     EXTRA BRAND TOKENS
+  ======================================================= */
+
+  --brand-violet: #8b7cff;
+
+  --brand-indigo: #818cf8;
+
+  --brand-blue: #5b8cff;
+
+  --brand-cyan: #22d3ee;
+
+
+  --brand-gradient:
+    linear-gradient(
+      135deg,
+      #8b7cff 0%,
+      #6366f1 48%,
+      #4f7cff 100%
+    );
+
+
+  --brand-gradient-wide:
+    linear-gradient(
+      100deg,
+      #8b7cff 0%,
+      #6366f1 34%,
+      #4f7cff 68%,
+      #22d3ee 100%
+    );
+
+
+  --brand-glow:
+    rgba(124, 92, 255, 0.28);
+
+
+  --cyan-soft:
+    rgba(34, 211, 238, 0.10);
+
+
+  --accent-border:
+    rgba(139, 124, 255, 0.20);
+}
+
+
+/* =========================================================
+   DOCUMENT
+========================================================= */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  height: 100%;
+}
+
+
+html {
+  background: var(--bg);
+}
+
+
+body {
+  margin: 0;
+
+  font-family: var(--font-sans);
+
+  background-color: var(--bg);
+
+  color: var(--ink);
+
+  -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
+
+  font-feature-settings:
+    "cv11",
+    "ss01";
+
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =========================================================
+   GLOBAL BORDER COLOR
+========================================================= */
+
+* {
+  border-color: var(--border);
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+   subtle brand detail
+========================================================= */
+
+::selection {
+  background:
+    rgba(124, 92, 255, 0.20);
+
+  color: var(--ink);
+}
+
+
+[data-theme="dark"] ::selection {
+  background:
+    rgba(139, 124, 255, 0.28);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   CARD SHADOW HELPERS
+========================================================= */
+
+.shadow-card {
+  box-shadow:
+    var(--shadow-card);
+}
+
+
+.shadow-hover {
+  box-shadow:
+    var(--shadow-hover);
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.font-display {
+  font-family:
+    var(--font-display);
+
+  letter-spacing:
+    -0.02em;
+}
+
+
+.font-serif {
+  font-family:
+    var(--font-serif);
+}
+
+
+.tabular {
+  font-variant-numeric:
+    tabular-nums;
+}
+
+
+/* =========================================================
+   RESUMate BRAND HELPERS
+========================================================= */
+
+.brand-gradient {
+  background:
+    var(--brand-gradient);
+}
+
+
+.brand-gradient-wide {
+  background:
+    var(--brand-gradient-wide);
+}
+
+
+.brand-text-gradient {
+  background:
+    var(--brand-gradient-wide);
+
+  background-clip:
+    text;
+
+  -webkit-background-clip:
+    text;
+
+  color:
+    transparent;
+
+  -webkit-text-fill-color:
+    transparent;
+}
+
+
+.brand-glow {
+  box-shadow:
+    0 12px 36px -14px
+    var(--brand-glow);
+}
+
+
+/* =========================================================
+   ACCENT SURFACE
+========================================================= */
+
+.accent-surface {
+  background:
+    var(--accent-soft);
+
+  color:
+    var(--accent-strong);
+
+  border:
+    1px solid var(--accent-border);
+}
+
+
+/* =========================================================
+   SUCCESS / CYAN SURFACE
+========================================================= */
+
+.success-surface {
+  background:
+    var(--cyan-soft);
+
+  color:
+    var(--success);
+
+  border:
+    1px solid
+    rgba(34, 211, 238, 0.16);
+}
+
+
+/* =========================================================
+   PREMIUM DARK BLUE CARD
+========================================================= */
+
+.brand-dark-card {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0b1226 0%,
+      #111b3a 38%,
+      #172554 68%,
+      #0f172a 100%
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 18px 45px -18px
+    rgba(37, 99, 235, 0.42);
+}
+
+
+.brand-dark-card::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(124, 92, 255, 0.30),
+      transparent 38%
+    );
+}
+
+
+.brand-dark-card::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(34, 211, 238, 0.12),
+      transparent 36%
+    );
+}
+
+
+/* =========================================================
+   BRAND PROGRESS BAR
+========================================================= */
+
+.brand-progress {
+  background:
+    linear-gradient(
+      90deg,
+      #7c5cff 0%,
+      #6366f1 42%,
+      #4f7cff 72%,
+      #22d3ee 100%
+    );
+
+  box-shadow:
+    0 0 14px
+    rgba(79, 124, 255, 0.20);
+}
+
+
+/* =========================================================
+   BRAND FOCUS RING
+========================================================= */
+
+.brand-focus {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+
+.brand-focus:focus {
+  outline:
+    none;
+
+  border-color:
+    rgba(124, 92, 255, 0.50);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(124, 92, 255, 0.10);
+}
+
+
+[data-theme="dark"] .brand-focus:focus {
+  border-color:
+    rgba(139, 124, 255, 0.55);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(124, 92, 255, 0.13);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width:
+    10px;
+
+  height:
+    10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background:
+    rgba(15, 17, 21, 0.08);
+
+  border:
+    3px solid transparent;
+
+  background-clip:
+    padding-box;
+
+  border-radius:
+    999px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(15, 17, 21, 0.14);
+
+  border:
+    3px solid transparent;
+
+  background-clip:
+    padding-box;
+}
+
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  border:
+    3px solid transparent;
+
+  background-clip:
+    padding-box;
+}
+
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(139, 124, 255, 0.20);
+
+  border:
+    3px solid transparent;
+
+  background-clip:
+    padding-box;
+}
+
+
+/* =========================================================
+   MOTION ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}
